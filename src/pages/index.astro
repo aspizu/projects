@@ -17,7 +17,7 @@ const projects = await getCollection("projects")
                     let r = p.data.readme.split("\n")[0].replace(/^#+ /, "")
                     return (
                         <a
-                            href={`projects/${p.id}`}
+                            href={`/projects/${p.id}`}
                             class="bg-white px-3 py-2 rounded border border-gray-200 hover:border-gray-400 transition-colors"
                         >
                             <div class="text-base font-medium mb-1">{p.id}</div>
