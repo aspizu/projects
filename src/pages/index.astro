@@ -1,16 +1,31 @@
 ---
+import {getCollection} from "astro:content"
+import Layout from "../layouts/Layout.astro"
 
+const projects = await getCollection("projects")
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Projects">
+    <div class="p-4">
+        <div class="text-xs text-gray-400 mb-2 font-medium">
+            GOBOSCRIPT GAMES & DEMOS
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl">
+            {
+                projects.map((p) => {
+                    if (!p) return null
+                    let r = p.data.readme.split("\n")[0].replace(/^#+ /, "")
+                    return (
+                        <a
+                            href={`projects/${p.id}`}
+                            class="bg-white px-3 py-2 rounded border border-gray-200 hover:border-gray-400 transition-colors"
+                        >
+                            <div class="text-base font-medium mb-1">{p.id}</div>
+                            <div class="text-xs text-gray-600 truncate">{r}</div>
+                        </a>
+                    )
+                })
+            }
+        </div>
+    </div>
+</Layout>
