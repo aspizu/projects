@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+.markdown {
+    h1 {
+        @apply text-3xl font-bold mb-6 mt-8 text-gray-900;
+    }
+    h2 {
+        @apply text-2xl font-bold mb-4 mt-6 text-gray-800;
+    }
+    h3 {
+        @apply text-xl font-semibold mb-3 mt-5 text-gray-700;
+    }
+    h4 {
+        @apply text-lg font-semibold mb-2 mt-4 text-gray-700;
+    }
+    h5 {
+        @apply text-base font-semibold mb-2 mt-3 text-gray-600;
+    }
+    h6 {
+        @apply text-sm font-semibold mb-2 mt-3 text-gray-600;
+    }
+    p {
+        @apply mb-4 text-gray-700 leading-relaxed;
+    }
+    a {
+        @apply text-blue-600 hover:text-blue-800 underline;
+    }
+    strong {
+        @apply font-semibold text-gray-900;
+    }
+    em {
+        @apply italic;
+    }
+    code {
+        @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-red-600;
+    }
+    pre {
+        @apply bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto;
+        code {
+            @apply bg-transparent px-0 py-0 text-gray-100;
+        }
+    }
+    ul {
+        @apply mb-4 ml-6 space-y-1;
+        li {
+            @apply list-disc;
+            ul {
+                @apply mb-0 mt-1;
+                li {
+                    list-style-type: circle;
+                    ul {
+                        li {
+                            list-style-type: square;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ol {
+        @apply mb-4 ml-6 space-y-1;
+        li {
+            @apply list-decimal;
+            ol {
+                @apply mb-0 mt-1;
+                li {
+                    list-style-type: lower-alpha;
+                    ol {
+                        li {
+                            list-style-type: lower-roman;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    blockquote {
+        @apply border-l-4 border-gray-300 pl-4 py-2 mb-4 italic text-gray-600 bg-gray-50;
+        p {
+            @apply mb-2 last:mb-0;
+        }
+    }
+    table {
+        @apply w-full border-collapse mb-4;
+        th {
+            @apply border border-gray-300 px-4 py-2 bg-gray-100 font-semibold text-left;
+        }
+        td {
+            @apply border border-gray-300 px-4 py-2;
+        }
+    }
+    hr {
+        @apply border-0 border-t border-gray-300 my-6;
+    }
+    img {
+        @apply max-w-full h-auto rounded-lg mb-4;
+    }
+    del {
+        @apply line-through text-gray-500;
+    }
+    mark {
+        @apply bg-yellow-200 px-1;
+    }
+    kbd {
+        @apply bg-gray-200 px-2 py-1 rounded text-sm font-mono border border-gray-300;
+    }
+    sub {
+        @apply text-xs;
+    }
+    sup {
+        @apply text-xs;
+    }
+}

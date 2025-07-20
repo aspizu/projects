@@ -1,0 +1,118 @@
+---
+import {getCollection} from "astro:content"
+import "../styles/global.css"
+import {Play, Stop} from "@astropub/icons"
+import {marked} from "marked"
+export async function getStaticPaths() {
+    const projects = await getCollection("projects")
+    return projects.map((project) => ({
+        params: {slug: project.id},
+        props: {project},
+    }))
+}
+const {project} = Astro.props
+const {default: sb3url} = await import(
+    `../../projects/${project.id}/${project.id}.sb3?url`
+)
+const readme = marked.parse(project.data.readme)
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{project.id}</title>
+    </head>
+    <body class="bg-gray-50 text-gray-900">
+        <div class="flex p-1 gap-1 h-screen">
+            <div class="w-[480px] flex-shrink-0">
+                <div class="flex gap-1 mb-1">
+                    <button
+                        id="gfbtn"
+                        class="bg-gray-600 hover:bg-gray-700 active:bg-gray-800 text-white px-2 py-1 text-xs flex items-center rounded transition-colors"
+                        title="Start"><Play size="12" /></button
+                    >
+                    <button
+                        id="stopbtn"
+                        class="bg-gray-600 hover:bg-gray-700 active:bg-gray-800 text-white px-2 py-1 text-xs flex items-center rounded transition-colors"
+                        title="Stop"><Stop size="12" /></button
+                    >
+                </div>
+                <div
+                    id="project"
+                    data-sb3url={sb3url}
+                    class="w-[480px] h-[360px] border border-gray-300"
+                >
+                </div>
+                <div class="markdown" set:html={readme} />
+            </div>
+            <div class="flex-1 flex flex-col border-l border-gray-300">
+                <div class="flex border-b border-gray-300">
+                    {
+                        project.data.files.map(({path}: {path: string}, i: number) => (
+                            <button
+                                class={`px-2 py-1 text-xs border-b-2 ${i === 0 ? "border-blue-500 text-blue-600" : "border-transparent text-gray-600 hover:text-gray-900"}`}
+                                data-tab={i}
+                            >
+                                {path}
+                            </button>
+                        ))
+                    }
+                </div>
+                <div class="flex-1 overflow-auto">
+                    {
+                        project.data.files.map(
+                            ({data}: {path: string; data: string}, i: number) => (
+                                <div
+                                    class={`tab-content ${i === 0 ? "block" : "hidden"}`}
+                                    data-content={i}
+                                >
+                                    <pre
+                                        class="bg-gray-100 p-1 text-xs overflow-auto font-mono h-full"
+                                        set:html={data}
+                                    />
+                                </div>
+                            )
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        import {Scaffolding} from "@turbowarp/scaffolding"
+        const project = document.getElementById("project")!
+        const gfbtn = document.getElementById("gfbtn")!
+        const stopbtn = document.getElementById("stopbtn")!
+        const scaffolding = new Scaffolding()
+        scaffolding.setup()
+        scaffolding.appendTo(project)
+        const sb3url = project.dataset.sb3url as string
+        const response = await fetch(sb3url)
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
+        const sb3data = await response.arrayBuffer()
+        scaffolding.loadProject(sb3data)
+        gfbtn.onclick = () => scaffolding.greenFlag()
+        stopbtn.onclick = () => scaffolding.stopAll()
+
+        const tabs = document.querySelectorAll("[data-tab]")
+        const contents = document.querySelectorAll(".tab-content")
+
+        function switchTab(index: number) {
+            tabs.forEach((tab, i) => {
+                const isActive = i === index
+                tab.className = `px-2 py-1 text-xs border-b-2 ${isActive ? "border-blue-500 text-blue-600" : "border-transparent text-gray-600 hover:text-gray-900"}`
+            })
+            contents.forEach((content, i) => {
+                content.className = `tab-content ${i === index ? "block" : "hidden"}`
+            })
+        }
+
+        tabs.forEach((tab, i) => {
+            tab.addEventListener("click", () => switchTab(i))
+        })
+    </script>
+</html>

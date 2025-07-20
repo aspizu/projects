@@ -1,0 +1,22 @@
+{
+    "name": "gsplayer",
+    "type": "module",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "bun x --bun astro dev",
+        "build": "bun x --bun astro build",
+        "preview": "bun x --bun astro preview",
+        "astro": "bun x --bun astro"
+    },
+    "dependencies": {
+        "@astropub/icons": "^0.2.0",
+        "@tailwindcss/vite": "^4.1.11",
+        "@turbowarp/scaffolding": "^0.3.0",
+        "astro": "^5.12.0",
+        "marked": "^16.1.1",
+        "tailwindcss": "^4.1.11"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.2.18"
+    }
+}
