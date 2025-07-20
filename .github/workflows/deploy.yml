@@ -20,6 +20,11 @@ jobs:
         steps:
             - name: Checkout your repository using git
               uses: actions/checkout@v4
+            - name: Install goboscript from git
+              uses: baptiste0928/cargo-install@v3
+              with:
+                  crate: goboscript
+                  git: https://github.com/aspizu/goboscript
             - name: Install, build, and upload your site
               uses: withastro/action@v3
               with:
